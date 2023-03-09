@@ -28,19 +28,27 @@ def test(sonastik:dict,sonastik2:dict,nimi:str,koik:list):
     print(koik)
     return koik
 
-def sorter(koik:list,vastuvoetud:list,eisoobi:list,koikfail:str):#,vastuvoetudfail:str,eisoobi.txt
-    koiklen = len(koik)
-    f=open(koikfail,"w",encoding="utf-8-sig")
-    for line in koik:
+def kirjutafaeli(list:list,file:str):
+    f=open(file,"w",encoding="utf-8-sig")
+    for line in list:
         f.write(str(line)+"\n")
     f.close()
+    return file
+
+def sorter(koik:list,vastuvoetud:list,eisoobi:list,koikfail:str,vastuvoetudfail:str,eisoobifail:str):
+    koiklen = len(koik)
+    kirjutafaeli(koik,koikfail)
     if koiklen >= 5:
         for jj in range (koiklen):
             if koik[jj][1] <(koik[4][1]):
                 eisoobi.append(koik[jj])
+                eisoobi.sort(key=lambda a: a[0])
+
             else:
                 vastuvoetud.append(koik[jj])
-    return koikfail
+    kirjutafaeli(eisoobi,eisoobifail)
+    kirjutafaeli(vastuvoetud,vastuvoetudfail)
+    return vastuvoetud,eisoobi, koikfail,vastuvoetudfail,eisoobifail
 
 def loe_faelist(newlist:list,fail:str):
     f=open(fail,"r",encoding="utf-8-sig")
@@ -51,10 +59,25 @@ def loe_faelist(newlist:list,fail:str):
         v=v[:-2]
         v=v[2:]
         k=k[2:]
-        print(rida)
         newlist.append((k, v))
     f.close()
     return newlist
 
+def printfile(fail:str):
+    f=open(fail,"r",encoding="utf-8-sig")
+    lines=f.readlines()
+    for line in lines:
+        print(line.strip())
+    f.close
 
+def txttodictionary(dictionary:dict,dictionary2:dict,fail:str):
+    f=open(fail, "r", encoding="utf-8-sig")
+    for line in f:
+        k, v=line.strip().split("-")
+        dictionary[k.strip()] = v.strip()
+        f=open("vastus.txt", "r", encoding="utf-8-sig")
+    for line in f:
+        k, v=line.strip().split("-")
+        dictionary2[v.strip()] = k.strip()
+        f=open("vastus.txt", "r", encoding="utf-8-sig")
     
